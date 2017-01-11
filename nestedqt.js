@@ -42,7 +42,6 @@ function appendTweets(node){
           var element = document.createElement("div");
           element.className='nested show-nested';
           var text = document.createElement("a");
-          text.className = 'show-nested';
           var href = x[i].getElementsByClassName('QuoteTweet-link')[0].getAttribute('href');
           text.onclick = function(){getNestedTweet(this.parentNode, href)};
           text.appendChild(document.createTextNode("Show nested tweet"));
