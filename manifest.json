@@ -3,11 +3,15 @@
 
   "name": "Nested Quote Tweets",
   "description": "Allows twitter users to view nested quote tweets without opening a new page",
-  "version": "1.0",
+  "version": "1.0.2",
   "author":  "Sam Ringel",
 
   "browser_action": {
-    "default_icon": "images/quote_tweet.png"
+      "default_icon": {
+      "16": "images/quote_tweet16.png",
+      "48": "images/quote_tweet48.png",
+      "128": "images/quote_tweet128.png"
+    }
   },
 
   "content_scripts": [
