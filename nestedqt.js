@@ -74,7 +74,7 @@ function appendTweets(node){
 }
 
 /**
-  Shows the nested tweet
+  Shows {quoteTweet (element)}, the nested tweet appended to {element (element)}
 */
 function showNestedTweet(element, quoteTweet) {
   //removes 'show nested tweet' button
