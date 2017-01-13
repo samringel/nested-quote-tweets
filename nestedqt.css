@@ -2,3 +2,6 @@
 	padding: 12px;
 	padding-top: 0;
 }
+body .tweet .nestedQuoteTweet {
+	margin-top: 0;
+}
