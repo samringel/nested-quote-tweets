@@ -37,8 +37,9 @@ function appendTweets(node){
         if (this.readyState == 4 && this.status == 200) {
 
           //determines whether quote tweet is nested
-          var quoteTweets = this.responseXML.getElementsByClassName('QuoteTweet');
-          var unavailable = this.responseXML.getElementsByClassName('QuoteTweet--unavailable');
+          var mainFoundTweet = this.responseXML.getElementsByClassName('permalink-inner permalink-tweet-container')[0];
+          var quoteTweets = mainFoundTweet.getElementsByClassName('QuoteTweet');
+          var unavailable = mainFoundTweet.getElementsByClassName('QuoteTweet--unavailable');
           if (quoteTweets.length > 0 || unavailable.length>0) {
 
             //determines whether there is a link to nested tweet
@@ -48,7 +49,7 @@ function appendTweets(node){
               if (destination.length > 0 && destination[0].innerHTML.substring(0,12) === 'twitter.com/') {
 
                 //removes link to nested tweet
-                links[0].parentNode.removeChild(links[0]);
+                links[j].parentNode.removeChild(links[j]);
                 break;
               }
             }
