@@ -3,7 +3,7 @@
 
   "name": "Nested Quote Tweets",
   "description": "Allows twitter users to view nested quote tweets without opening a new page",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "author":  "Sam Ringel",
 
   "browser_action": {
