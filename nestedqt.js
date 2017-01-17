@@ -27,51 +27,57 @@ function appendTweets(node){
 
   for (var i = 0; i < x.length; i++) {
     //determines whether appendTweet() has already been run
-    if (x[i].getElementsByClassName('nested').length ==0) {
-
-      //loads quote tweet
-      var http = new XMLHttpRequest();
-      http.responseType = 'document';
-      var currentTweet = x[i];
-      http.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-
-          //determines whether quote tweet is nested
-          var mainFoundTweet = this.responseXML.getElementsByClassName('permalink-inner permalink-tweet-container')[0];
-          var quoteTweets = mainFoundTweet.getElementsByClassName('QuoteTweet');
-          var unavailable = mainFoundTweet.getElementsByClassName('QuoteTweet--unavailable');
-          if (quoteTweets.length > 0 || unavailable.length>0) {
-
-            //determines whether there is a link to nested tweet
-            var links = currentTweet.getElementsByClassName('twitter-timeline-link');
-            for (var j = 0; j < links.length; j++) {
-              var destination = links[j].getElementsByClassName('js-display-url');
-              if (destination.length > 0 && destination[0].innerHTML.substring(0,12) === 'twitter.com/') {
-
-                //removes link to nested tweet
-                links[j].parentNode.removeChild(links[j]);
-                break;
-              }
-            }
-
-            //appends 'show nested tweet' button
-            var element = document.createElement("div");
-            element.className='nested show-nested';
-            var text = document.createElement("a");
-            if (quoteTweets.length > 0)
-              text.onclick = function(){showNestedTweet(element, quoteTweets[0])};
-            else
-              text.onclick = function(){showNestedTweet(element, unavailable[0])};
-            text.appendChild(document.createTextNode("Show nested tweet"));
-            element.appendChild(text);
-            currentTweet.parentNode.insertBefore(element, currentTweet.nextSibling);
-          }
-        }
-      };
-      http.open('GET', x[i].getElementsByClassName('QuoteTweet-link')[0].getAttribute('href'));
-      http.send();
+    if (x[i].getElementsByClassName('nested').length == 0) {
+      sendAndRecieveRequest(x[i], x[i].getElementsByClassName('QuoteTweet-link')[0].getAttribute('href'));
     }
   }
+}
+
+/*
+  Determines whether {currentTweet (element)} quote tweet is nested via http request.
+  currentTweet is part of quote tweet with class "QuoteTweet-container"
+*/
+function sendAndRecieveRequest(currentTweet) {
+  //loads quote tweet
+  var http = new XMLHttpRequest();
+  http.responseType = 'document';
+  http.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+      //determines whether quote tweet is nested
+      var mainFoundTweets = this.responseXML.getElementsByClassName('permalink-inner permalink-tweet-container');
+      var quoteTweets = mainFoundTweets[0].getElementsByClassName('QuoteTweet');
+      var unavailable = mainFoundTweets[0].getElementsByClassName('QuoteTweet--unavailable');
+      if (quoteTweets.length > 0 || unavailable.length>0) {
+
+        //determines whether there is a link to nested tweet
+        var links = currentTweet.getElementsByClassName('twitter-timeline-link');
+        for (var j = 0; j < links.length; j++) {
+          var destination = links[j].getElementsByClassName('js-display-url');
+          if (destination.length > 0 && destination[0].innerHTML.substring(0,12) === 'twitter.com/') {
+
+            //removes link to nested tweet
+            links[j].parentNode.removeChild(links[j]);
+            break;
+          }
+        }
+
+        //appends 'show nested tweet' button
+        var element = document.createElement("div");
+        element.className='nested show-nested';
+        var text = document.createElement("a");
+        if (quoteTweets.length > 0)
+          text.onclick = function(){showNestedTweet(element, quoteTweets[0])};
+        else
+          text.onclick = function(){showNestedTweet(element, unavailable[0])};
+        text.appendChild(document.createTextNode("Show nested tweet"));
+        element.appendChild(text);
+        currentTweet.parentNode.insertBefore(element, currentTweet.nextSibling);
+      }
+    }
+  };
+  http.open('GET', currentTweet.getElementsByClassName('QuoteTweet-link')[0].getAttribute('href'));
+  http.send();
 }
 
 /**
